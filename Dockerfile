@@ -1,20 +1,19 @@
-# Используем официальный образ gcc на основе Ubuntu
-FROM gcc:12.2.0
+FROM ubuntu:22.04
 
-# Установка необходимых пакетов
 RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    make \
     libmosquitto-dev \
+    libmosquittopp-dev \
     nlohmann-json3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Создаем рабочую директорию
 WORKDIR /app
 
-# Копируем исходные файлы
-COPY main.cpp .
+COPY . .
 
-# Компилируем приложение
-RUN g++ -o embedded_app main.cpp -lmosquitto
+RUN mkdir -p build && cd build && cmake .. && make
 
-# Запускаем приложение
-CMD ["./embedded_app"]
+CMD ["./build/embedded-app"]
+

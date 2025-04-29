@@ -32,3 +32,4 @@ services:
 networks:
   embedded-network:
     driver: bridge
+
